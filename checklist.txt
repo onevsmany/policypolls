@@ -1,0 +1,15 @@
+CLARIFICATION CHECKLIST:
+1. clarify if issues are predefined
+
+IMPLEMENTATIONN CHECKLIST:
+1. Turned of TS "noImplicitAny" - will incrementally adopt TS fully as we move.
+2. Use a logging library like Morgan or winston to handle log errors.
+3. Schedule Backups to atlas cluster
+4. Implement JWT auth.
+5. incrementally add Oauth.
+
+
+PROPOSED FEATURES:
+1. Users should be able to see who is doing what on their list of issues. 
+2. If the issues are not predefined are is no easy way of validating the input, consider building a seperate NLP flask service to power
+    the issues validation. 
