@@ -1,10 +1,11 @@
 import {Router, Request, Response, NextFunction} from 'express';
-import validateRoutes from '../middlwares/ValidateRoutes';
+
+import {signupValidator} from '../middlwares/ValidateRoutes';
 import SignUp from '../controllers/signupController'
 
 const router = Router();
 
-router.use(validateRoutes.signupValidator)
+router.use(signupValidator)
 
 router.post('/signup', async(req:Request, res:Response, next:NextFunction) => {
     try{

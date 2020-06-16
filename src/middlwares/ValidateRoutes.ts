@@ -7,15 +7,24 @@ import {ILogin, ISignup} from '../interfaces/index';
  * @description Router level middlewares to validate input to a route.  
  * @todo decide on validation strategy & use joi to vaidate schema properties. 
  */
-const loginValidator = async function(req:Request, res:Response, next:NextFunction){
+export const loginValidator = async function(req:Request, res:Response, next:NextFunction){
     try{
         const {email, password} = req.body;
+        console.log(req.body, 'qewea')
+        if(!email || !password){
+            throw new Error('missing or invalid password')
+        }
+        next()
     }catch(e){
-        throw new Error(`Invalid Input format: ${e}`)
+        res.status(400).send({
+            'success':false,
+            'message': `${e.message}`
+
+        }).end()
     }
 } 
 
-const signupValidator = async function (req:Request, res:Response, next:NextFunction){
+export const signupValidator = async function (req:Request, res:Response, next:NextFunction){
     try{
         const {username, email, password} = req.body
         if (!username || !email || !password){
@@ -31,7 +40,7 @@ const signupValidator = async function (req:Request, res:Response, next:NextFunc
     }
 }
 
-const tokenValidator =  async function(req:Request, res:Response, next:NextFunction){
+export const tokenValidator =  async function(req:Request, res:Response, next:NextFunction){
     try{
         if (
             (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
@@ -46,10 +55,4 @@ const tokenValidator =  async function(req:Request, res:Response, next:NextFunct
 
 }
 
-const validateRoutes = {
-    loginValidator,
-    signupValidator,
-    tokenValidator
-}
 
-export default validateRoutes

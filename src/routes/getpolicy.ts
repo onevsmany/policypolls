@@ -1,4 +1,6 @@
 import {Router, Request, Response, NextFunction} from 'express';
 
 const router = Router()
-router.get('/')
+router.get('/getpolicy')
+
+export default router

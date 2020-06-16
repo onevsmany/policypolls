@@ -7,14 +7,14 @@ interface env {
     PORT:number | undefined,
 }
 
-const envPATH:string = path.resolve(process.cwd(), '../', '.env');
+const envPATH:string = path.resolve(process.cwd(), '.env');
 const envFound = dotenv.config({path:envPATH});
-console.log(process.env.PORT)
+console.log(envPATH)
 
-// // Error handling for the absence of a .env file
-// if (envFound.error){
-//     throw new Error(" Could not find a .env file ");
-// }
+// Error handling for the absence of a .env file
+if (envFound.error){
+    throw new Error(" Could not find a .env file ");
+}
 
 
 /**
@@ -41,7 +41,7 @@ switch(process.env.NODE_ENV){
 
     default:
         config = {
-            DB_CONNECTION:"mongodb://127.0.0.1:27017/test",
+            DB_CONNECTION:process.env.CLUSTER_SRV,
             PORT: 3000
         }
     

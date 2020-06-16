@@ -1,15 +1,29 @@
 import {Router, Request, Response } from 'express';
-import validateRoutes from '../middlwares/ValidateRoutes'
+import {loginValidator} from '../middlwares/ValidateRoutes'
+import login from '../controllers/loginController'
 
 const router: Router = Router();
-router.use(validateRoutes.loginValidator)
-router.use(validateRoutes.tokenValidator)
+router.use(loginValidator)
 
-router.get('/login', async (req, res) => {
+
+router.post('/login', async (req, res) => {
     try{
-
-        
-    }catch{
-
+        const {email, password} = await req.body 
+        const token = await login(email, password) 
+        res.header('x-auth', token)
+        .status(200)
+        .send({
+            'success':true,
+            'message':'user signed in'
+        })
+        ;
+    }catch(e){
+        res.status(400)
+        .send({
+            'success':false,
+            'message':e.message
+        })
     }
 })
+
+export default router
