@@ -12,9 +12,9 @@ const envFound = dotenv.config({path:envPATH});
 console.log(envPATH)
 
 // Error handling for the absence of a .env file
-if (envFound.error){
-    throw new Error(" Could not find a .env file ");
-}
+// if (envFound.error){
+//     throw new Error(" Could not find a .env file ");
+// }
 
 
 /**

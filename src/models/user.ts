@@ -12,10 +12,7 @@ interface IUserDocument extends Document{
         access:string,
         token:string
     }],
-    policies: string[],
     generateAuthToken: () => string,
-    addPolicies: (policyArray:string[]) => void,
-    getPolicies: () => string[]
 
     
 } 
@@ -58,15 +55,8 @@ const UserSchema = new Schema({
             required:true
         }
         
-    }],
+    }]
 
-    // if isssues are predifined, add some custome validation here.
-    policies:{
-        type: Array,
-        required: false,
-        default: []
-
-    }
 
 });
 UserSchema.pre<IUserDocument>('save', async function(next){
@@ -89,31 +79,11 @@ UserSchema.methods.generateAuthToken = async function<IUserModel>(){
         const id:string = this._id.toHexString()
         const access:string = 'auth'
         const token:string = await createToken(id, access)
-        this.tokens.push({access, token});
-        this.save()
+        await this.tokens.push({access, token});
+        await this.save()
         return token
     }catch(e){
-        throw new Error(`Unable to generate token ${e}`)
-    }
-}
-
-UserSchema.methods.getPolicies = async function(){
-    try{
-        const userPolicies: string[] = this.policies;
-        return userPolicies
-        
-    }catch(e){
-        throw new Error('Unable to get policies for this particular user');
-    }
-}
-
-UserSchema.methods.addPolicies = async function<IUserModel>(policy:string[]){
-    try{
-        this.policies.concat(policy)
-        this.policies.save()
-
-    }catch(e){
-        throw new Error('error adding policy for this user')
+        throw new Error(`Unable to generate token`)
     }
 }
 

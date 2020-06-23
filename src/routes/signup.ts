@@ -5,20 +5,18 @@ import SignUp from '../controllers/signupController'
 
 const router = Router();
 
-router.use(signupValidator)
-
-router.post('/signup', async(req:Request, res:Response, next:NextFunction) => {
+router.post('/signup', signupValidator, async(req:Request, res:Response, next:NextFunction) => {
     try{
         const token = await SignUp(req.body) 
         await res.status(201).header('x-auth', token).send({
             'success':true,
             'message':'created new user'
-
         })
     }catch(e){
+        console.log(e)
         res.status(500).send({
             'success':false,
-            'message':e.message
+            'error':e.message
         })
     }
     

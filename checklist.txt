@@ -8,6 +8,7 @@ IMPLEMENTATIONN CHECKLIST:
 4. Implement JWT auth.
 5. incrementally add Oauth.
 6. comeback and rectify type casting from dotenv to other types
+7. enable snyk security 
 
 
 PROPOSED FEATURES:

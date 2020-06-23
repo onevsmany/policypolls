@@ -1,5 +1,8 @@
-import {Request, Response, NextFunction} from 'express'
-import {ILogin, ISignup} from '../interfaces/index';
+import {Request, Response, NextFunction} from 'express';
+import joi, {Schema, validate} from 'joi';
+import jsonwebtoken, {verify} from 'jsonwebtoken'; 
+import {JWT_KEY} from '../config/index'
+
 
 
 
@@ -7,18 +10,23 @@ import {ILogin, ISignup} from '../interfaces/index';
  * @description Router level middlewares to validate input to a route.  
  * @todo decide on validation strategy & use joi to vaidate schema properties. 
  */
+
+
 export const loginValidator = async function(req:Request, res:Response, next:NextFunction){
     try{
-        const {email, password} = req.body;
-        console.log(req.body, 'qewea')
-        if(!email || !password){
-            throw new Error('missing or invalid password')
-        }
+        const schema:Schema = joi.object({
+            email:joi.string()
+                     .email({minDomainAtoms: 2})
+                     .required(),
+             password:joi.string()
+                         .required()
+         })
+         await schema.validate(req.body);
         next()
     }catch(e){
         res.status(400).send({
             'success':false,
-            'message': `${e.message}`
+            'error': `${e.message}`
 
         }).end()
     }
@@ -26,30 +34,39 @@ export const loginValidator = async function(req:Request, res:Response, next:Nex
 
 export const signupValidator = async function (req:Request, res:Response, next:NextFunction){
     try{
-        const {username, email, password} = req.body
-        if (!username || !email || !password){
-            throw new Error('Invalid or missing parameters')
-        }
+        const schema:Schema = joi.object({
+            username:joi.string()
+                        .required(),
+            email:joi.string()
+                    .email({minDomainAtoms:2})
+                    .required(),
+            password:joi.string()
+                        .required()
+        })
+        schema.validate(req.body)
         next()
     }catch(e){
         res.status(400).
         send({
             'success':false,
-            'message': e.message
+            'error': e.message
         }).end()
     }
 }
 
-export const tokenValidator =  async function(req:Request, res:Response, next:NextFunction){
+export const verifyTokenFromHeader =  async function(req){
     try{
         if (
             (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
             (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
           ) {
-            return req.headers.authorization.split(' ')[1];
+            const payload:any = await verify(req.headers.authorization.split(' ')[1], JWT_KEY);
+            return payload
+            
           }
-          return null;
+        //   throw new Error('Token not specified correctly in the header')
     }catch(e){
+        throw new Error(e.message)
 
     }
 

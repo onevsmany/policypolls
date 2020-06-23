@@ -7,7 +7,7 @@ const createToken = (id:string, access:string) => {
         access
     }
     const signed = jsonwebtoken.sign(unsigned, JWT_KEY, {
-        expiresIn:323
+        expiresIn:"2 days"
     });
     return signed 
 } 

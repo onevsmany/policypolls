@@ -2,12 +2,22 @@ import jsonwebtoken from 'jsonwebtoken';
 import User from '../models/user';
 import {JWT_KEY} from '../config/index';
 
-const auth = (token) => {
-    const payload = jsonwebtoken.verify(token, JWT_KEY);
-    const _id = payload.id
-    const user = User.findOne({_id:_id})
-    return user 
+interface Iauth{
+    id: string,
+    access: string,
+    iat: number,
+    exp: number
+}
+
+const auth = async (token) => {
+    try{
+        const payload = await jsonwebtoken.verify(token, JWT_KEY)
+    console.log(payload)
+
+    }catch(e){
+        console.log(e.message)
+    }
 
 }
 
-export default auth;
+auth('ejyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZThlODhkOGFiMTI2NWIzNDQ1YTBhYSIsImFjY2VzcyI6ImF1dGgiLCJpYXQiOjE1OTI5MTE1MjEsImV4cCI6MTU5MzA4NDMyMX0.rjKGKs6gvxqjAwSPoE0bsyD1VqCRYmCjNEkiqr9tJ9A')

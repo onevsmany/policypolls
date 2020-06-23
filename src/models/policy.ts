@@ -1,4 +1,5 @@
-import {Model, Schema, model, Document} from 'mongoose';
+import {Model, Schema, model, Document, SchemaTypes, } from 'mongoose';
+import { string } from 'joi';
 
 
 interface IPolicyDocument extends Document{
@@ -8,6 +9,11 @@ interface IPolicyDocument extends Document{
 }
 
 const policySchema = new Schema({
+    user: {
+        type: SchemaTypes.ObjectId,
+        required: true
+    },
+
     policies:{
         type: Array,
         required: false,
@@ -15,22 +21,21 @@ const policySchema = new Schema({
 
     },
     lastUpdated:{
-        type:Number,
+        type:string,
         default: null
+    },
+    createdAt:{
+        type:string,
+        required:false
     }
 })
 
 
+/**
+ * @description returns the polcies for a particular user 
+ */
 
-policySchema.methods.getPolicies = async function(){
-    try{
-        const userPolicies: string[] = this.policies;
-        return userPolicies
-        
-    }catch(e){
-        throw new Error('Unable to get policies for this particular user');
-    }
-}
+
 
 policySchema.methods.addPolicies = async function(policy:string[]){
     try{
@@ -43,3 +48,5 @@ policySchema.methods.addPolicies = async function(policy:string[]){
 }
 
 const Policy = model<IPolicyDocument>('Policy',  policySchema)
+
+export default Policy

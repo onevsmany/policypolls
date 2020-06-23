@@ -19,3 +19,11 @@ export interface Itoken{
     id:string,
     access: string
 }
+
+export interface IPayload{
+    id:string,
+    access:string,
+    iat:number,
+    exp: number
+
+}
