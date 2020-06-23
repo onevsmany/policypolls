@@ -5,7 +5,7 @@ import login from '../controllers/loginController'
 const router = Router();
 
 
-router.post('/login', loginValidator, async (req, res) => {
+router.post('/login', loginValidator, async (req:Request, res:Response) => {
     try{
         const {email, password} = await req.body 
         const token = await login(email, password) 

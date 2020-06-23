@@ -5,7 +5,7 @@ import SignUp from '../controllers/signupController'
 
 const router = Router();
 
-router.post('/signup', signupValidator, async(req:Request, res:Response, next:NextFunction) => {
+router.post('/signup', signupValidator, async(req:Request, res:Response) => {
     try{
         const token = await SignUp(req.body) 
         await res.status(201).header('x-auth', token).send({

@@ -3,7 +3,7 @@ import isAuth from '../middlwares/auth'
 import {getUserPolicy} from '../controllers/policyController'
 
 const router = Router()
-router.get('/getpolicy', isAuth, async (req:Request, res:Response, next:NextFunction) => {
+router.get('/getpolicy', isAuth, async (req:Request, res:Response) => {
     try{
         const userPolicy = getUserPolicy(req.params.id)
         res.status(200).send({
