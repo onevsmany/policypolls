@@ -3,9 +3,14 @@ import { string } from 'joi';
 
 
 interface IPolicyDocument extends Document{
+    user:string,
     policies: string[],
-    addPolicies: (policyArray:string[]) => void,
-    getPolicies: () => string[]
+    createdAt: string[],
+    lastUpdatedAt:string[]
+}
+
+interface IPolicyModel extends Model<IPolicyDocument>{
+    getPolicyByUser: (user_id:string) => Promise<IPolicyDocument>
 }
 
 const policySchema = new Schema({
@@ -20,12 +25,12 @@ const policySchema = new Schema({
         default: []
 
     },
-    lastUpdated:{
-        type:string,
+    lastUpdatedAt:{
+        type:String,
         default: null
     },
     createdAt:{
-        type:string,
+        type:String,
         required:false
     }
 })
@@ -35,18 +40,38 @@ const policySchema = new Schema({
  * @description returns the polcies for a particular user 
  */
 
-
-
-policySchema.methods.addPolicies = async function(policy:string[]){
+policySchema.statics.getPolicyByUser = async function(user_id){
+    console.log(user_id)
     try{
-        this.policies.concat(policy)
-        this.policies.save()
-
+        const doc = await this.findOne({user:user_id})
+        if (!doc){
+            throw new Error('Coould not find a policies this user')
+        }
+        return doc
     }catch(e){
-        throw new Error('error adding policy for this user')
+        throw new Error(e.message)
+
     }
 }
 
-const Policy = model<IPolicyDocument>('Policy',  policySchema)
+/**
+ * @description Removes duplicates, trims whitespaces and forces of the values of the input to lowercase
+ * to ensure homogenounity 
+ */
+policySchema.pre<IPolicyDocument>('save', async function (next){
+    try{
+        if (this.isModified('policies')){
+            const current = this.policies
+            const unique = [... new Set(current)]
+            const cleaned = unique.map(elem => elem.trim().toLowerCase())
+            this.policies = cleaned
+            next()
+        }
+    }catch(e){
+        throw new Error('')
+    }
+})
+
+const Policy:IPolicyModel = model<IPolicyDocument, IPolicyModel>('Policy',  policySchema)
 
 export default Policy

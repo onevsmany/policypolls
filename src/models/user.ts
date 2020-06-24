@@ -59,6 +59,7 @@ const UserSchema = new Schema({
 
 
 });
+
 UserSchema.pre<IUserDocument>('save', async function(next){
     try{
         const user = await this;

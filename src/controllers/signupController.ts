@@ -16,7 +16,7 @@ const SignUp = async (body:ISignup) => {
         const token = await user.generateAuthToken();
         return token;
     }catch(e){
-        throw new Error(`${e}`)
+        throw new Error(`${e.message}`)
     }
  
 }

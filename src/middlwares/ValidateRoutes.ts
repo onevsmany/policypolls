@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import joi, {Schema, validate} from 'joi';
+import joi from '@hapi/joi';
 import jsonwebtoken, {verify} from 'jsonwebtoken'; 
 import {JWT_KEY} from '../config/index'
 
@@ -14,14 +14,14 @@ import {JWT_KEY} from '../config/index'
 
 export const loginValidator = async function(req:Request, res:Response, next:NextFunction){
     try{
-        const schema:Schema = joi.object({
+        const schema = joi.object({
             email:joi.string()
-                     .email({minDomainAtoms: 2})
+                     .email()
                      .required(),
              password:joi.string()
                          .required()
          })
-         await schema.validate(req.body);
+         await schema.validateAsync(req.body)
         next()
     }catch(e){
         res.status(400).send({
@@ -34,16 +34,16 @@ export const loginValidator = async function(req:Request, res:Response, next:Nex
 
 export const signupValidator = async function (req:Request, res:Response, next:NextFunction){
     try{
-        const schema:Schema = joi.object({
+        const schema = await joi.object({
             username:joi.string()
                         .required(),
             email:joi.string()
-                    .email({minDomainAtoms:2})
+                    .email()
                     .required(),
             password:joi.string()
                         .required()
         })
-        schema.validate(req.body)
+        await schema.validateAsync(req.body)
         next()
     }catch(e){
         res.status(400).
@@ -52,6 +52,23 @@ export const signupValidator = async function (req:Request, res:Response, next:N
             'error': e.message
         }).end()
     }
+}
+
+export const validatePolicy = async (req:Request, res:Response, next:NextFunction) => {
+    try{
+        const schema = await joi.object({
+            policy:joi.array()
+        })
+        await schema.validateAsync(req.body)
+        next()
+    }catch(e){
+        res.status(400).send({
+            'success':false,
+            'error':e.message
+        })
+    }
+    
+   
 }
 
 export const verifyTokenFromHeader =  async function(req){

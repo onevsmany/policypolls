@@ -7,10 +7,9 @@ import {IPayload} from '../interfaces/index'
 const isAuth = async (req:Request, res:Response, next:NextFunction) => {
     try{
         const payload:IPayload = await verifyTokenFromHeader(req);
-        console.log(payload)
         const user = await User.findOne({_id:payload.id})
         if (user){
-            req.body = payload.id
+            req.params.id = payload.id
             next();
         }else{
             throw new Error('Could not find a user associated with this token')
