@@ -8,7 +8,8 @@ interface IUserDocument extends Document{
     username:string,
     email:string,
     password:string,
-    generateAuthToken: () => string,
+    generateAuthToken: () => Promise<string>,
+    validatePassword: (oldPassword:string) => Promise<void>
 
     
 } 
@@ -67,6 +68,17 @@ UserSchema.methods.generateAuthToken = async function<IUserModel>(){
         return token
     }catch(e){
         throw new Error(`Unable to generate token`)
+    }
+}
+
+UserSchema.methods.validatePassword = async function<IUserModel>(oldPassword){
+    try{
+        const hash = await bcrypt.hash(oldPassword, 10 )
+        if (this.password !== hash){
+            throw new Error('Incorrect Password')
+        }
+    }catch(e){
+        throw new Error(e.message)
     }
 }
 

@@ -8,13 +8,13 @@ const router = Router();
 router.patch('/updatepolicy', isAuth, validatePolicy, async (req:Request, res:Response) =>{
     try{
         await updateUserPolicy(req.params.id, req.body.policy)
-        res.status(200).send({
+        await res.status(200).json({
             'success':true,
             'message': 'policies updated'
         })
 
     }catch(e){
-        res.status(500).send({
+        res.status(500).json({
             'success':false,
             'error':e.message
         })

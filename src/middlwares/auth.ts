@@ -16,7 +16,7 @@ const isAuth = async (req:Request, res:Response, next:NextFunction) => {
         }
 
     }catch(e){
-       res.status(400).send({
+       res.status(400).json({
            "success":false,
            "error":e.message
        })

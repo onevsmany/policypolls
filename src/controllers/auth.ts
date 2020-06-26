@@ -1,15 +1,56 @@
-import jsonwebtoken from 'jsonwebtoken';
 import User from '../models/user';
-import {JWT_KEY} from '../config/index';
+import { ISignup } from '../interfaces/index'
 
-interface Iauth{
-    id: string,
-    access: string,
-    iat: number,
-    exp: number
+
+/**
+ * @description All controllers related to authetication live here. just me keeping data access layer seperate 
+ */
+
+
+export const SignUp = async (body:ISignup) => {
+    try {
+        const exist = await User.findOne({email:body.email}).exec()
+        if (exist){
+            throw new Error('A user with this email already exists')
+        }
+        const user = await new User(body);
+        const token = await user.generateAuthToken();
+        return token;
+    }catch(e){
+        throw new Error(`${e.message}`)
+    }
+ 
 }
 
-const auth = async (token) => {
+
+export const login = async (email:string, password:string) => {
+    try{
+        const user = await User.findByCredentials(email, password);
+        const token = await user.generateAuthToken();
+        return token
+    }catch(e){
+        throw new Error(e.message)
+    }
    
-
+    
 }
+
+export const changeUserPassword = async (id, oldPassword:string, newPassword:string) => {
+    try{
+        const user = await User.findOne({'_id':id}).exec()
+        // theoritically I dont see a case where this is possible, that auth middleware 
+        // takes care of a situation like this. Anyways, Im still going to have this here.
+        if(!user){
+            throw new Error('Could find a associated user with this token')   
+        }
+        await user.validatePassword(oldPassword)
+        user.password = newPassword
+        user.save()
+    }catch(e){
+        throw new Error(e.message)
+    }
+}
+
+
+
+

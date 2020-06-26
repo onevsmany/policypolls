@@ -6,12 +6,12 @@ const router = Router()
 router.get('/getpolicy', isAuth, async (req:Request, res:Response) => {
     try{
         const userPolicy = await getUserPolicy(req.params.id)
-        res.status(200).send({
+        await res.status(200).json({
             'success':true,
             'message':userPolicy
         })
     }catch(e){
-        res.status(400).send({
+        res.status(400).json({
             'success':false,
             'error':e.message
         })

@@ -2,7 +2,9 @@ import Policy from '../models/policy'
 import moment from 'moment'
 
 
-
+/**
+ * @description all controllers related to policy lives here
+ */
 
 export const createPolicy = async (user_id, policies:string[]) => {
     try{

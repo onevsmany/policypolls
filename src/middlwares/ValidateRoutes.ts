@@ -25,7 +25,7 @@ export const loginValidator = async function(req:Request, res:Response, next:Nex
          await schema.validateAsync(req.body)
         next()
     }catch(e){
-        res.status(400).send({
+        res.status(400).json({
             'success':false,
             'error': `${e.message}`
 
@@ -48,7 +48,7 @@ export const signupValidator = async function (req:Request, res:Response, next:N
         next()
     }catch(e){
         res.status(400).
-        send({
+        json({
             'success':false,
             'error': e.message
         }).end()
@@ -63,7 +63,7 @@ export const validatePolicy = async (req:Request, res:Response, next:NextFunctio
         await schema.validateAsync(req.body)
         next()
     }catch(e){
-        res.status(400).send({
+        res.status(400).json({
             'success':false,
             'error':e.message
         }).end()
@@ -102,7 +102,7 @@ export const validatePasswordChange = async function(req:Request, res:Response, 
         await schema.validateAsync(req.body)
         next()
     }catch(e){
-        res.status(400).send({
+        res.status(400).json({
             'success':false,
             'error':e.message
         }).end()
