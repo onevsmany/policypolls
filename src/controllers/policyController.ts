@@ -40,13 +40,24 @@ export const getUserPolicy = async (user_id) => {
 export const updateUserPolicy = async (user_id:string, policy:string[]) => {
     try{
         const userPolicy = await Policy.getPolicyByUser(user_id)
-        const updated = await userPolicy.policies.concat(policy)
-        userPolicy.policies = await updated
+        const updatedPolicy = await userPolicy.policies.concat(policy)
+        const lastUpdatedAt = await moment().format("DD MM YYYY hh:mm:ss")
+        userPolicy.policies = await updatedPolicy
+        userPolicy.lastUpdatedAt = await lastUpdatedAt
         await userPolicy.save()
-        console.log(userPolicy)
     }catch(e){
       throw new Error('Could not update policy for this user')  
     }
+}
+
+
+/**
+ * @todo write query to count and return all the unique values in the policy collection
+ * @todo consider moving the policy colectiont to a seperate database and writ custom cluster config
+ * for access  
+ */
+export const allPolicy = async () => {
+
 }
 
 

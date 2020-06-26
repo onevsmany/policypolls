@@ -5,8 +5,8 @@ import { string } from 'joi';
 interface IPolicyDocument extends Document{
     user:string,
     policies: string[],
-    createdAt: string[],
-    lastUpdatedAt:string[]
+    createdAt: string,
+    lastUpdatedAt:string
 }
 
 interface IPolicyModel extends Model<IPolicyDocument>{
@@ -56,6 +56,7 @@ policySchema.statics.getPolicyByUser = async function(user_id){
 
 /**
  * @description Removes duplicates, trims whitespaces and forces of the values of the input to lowercase
+ * @Todo if need arises add some some custom parsing here
  * to ensure homogenounity 
  */
 policySchema.pre<IPolicyDocument>('save', async function (next){

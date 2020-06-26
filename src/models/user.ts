@@ -8,10 +8,6 @@ interface IUserDocument extends Document{
     username:string,
     email:string,
     password:string,
-    tokens: [{
-        access:string,
-        token:string
-    }],
     generateAuthToken: () => string,
 
     
@@ -45,19 +41,6 @@ const UserSchema = new Schema({
         minlength: 6
     },
 
-    tokens: [{
-        access:{
-            type:String,
-            required:true
-        },
-        token:{
-            type:String,
-            required:true
-        }
-        
-    }]
-
-
 });
 
 UserSchema.pre<IUserDocument>('save', async function(next){
@@ -80,13 +63,13 @@ UserSchema.methods.generateAuthToken = async function<IUserModel>(){
         const id:string = this._id.toHexString()
         const access:string = 'auth'
         const token:string = await createToken(id, access)
-        await this.tokens.push({access, token});
         await this.save()
         return token
     }catch(e){
         throw new Error(`Unable to generate token`)
     }
 }
+
 
 
 UserSchema.statics.findByCredentials = async function (email, password){

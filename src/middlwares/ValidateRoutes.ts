@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import joi from '@hapi/joi';
 import jsonwebtoken, {verify} from 'jsonwebtoken'; 
+
 import {JWT_KEY} from '../config/index'
 
 
@@ -65,7 +66,7 @@ export const validatePolicy = async (req:Request, res:Response, next:NextFunctio
         res.status(400).send({
             'success':false,
             'error':e.message
-        })
+        }).end()
     }
     
    
@@ -87,6 +88,26 @@ export const verifyTokenFromHeader =  async function(req){
 
     }
 
+}
+
+export const validatePasswordChange = async function(req:Request, res:Response, next:NextFunction){
+    try{
+        const schema = await joi.object({
+            oldPassword:joi.string()
+                           .required(),
+            newPassword:joi.string()
+                            .required()
+
+        })
+        await schema.validateAsync(req.body)
+        next()
+    }catch(e){
+        res.status(400).send({
+            'success':false,
+            'error':e.message
+        }).end()
+
+    }
 }
 
 

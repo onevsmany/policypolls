@@ -1,4 +1,4 @@
-import {Router, Request, Response, NextFunction, request} from 'express';
+import {Router, Request, Response} from 'express';
 import isAuth from '../middlwares/auth'
 import {createPolicy} from '../controllers/policyController'
 import {validatePolicy} from '../middlwares/ValidateRoutes'
