@@ -3,6 +3,8 @@ import validator from 'validator';
 import createToken from '../services/TokenAuth';
 import bcrypt from 'bcrypt';
 
+import logger from '../util/logger';
+
 interface IUserDocument extends Document {
 	username: string;
 	email: string;
@@ -48,6 +50,7 @@ UserSchema.pre<IUserDocument>('save', async function(next) {
 		}
 		next();
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error(``);
 	}
 });

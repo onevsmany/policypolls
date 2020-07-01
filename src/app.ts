@@ -10,6 +10,7 @@ import createPolicy from './routes/createpolicy';
 import updatePolicy from './routes/updatepolicy';
 import allPolicy from './routes/allpolicy';
 import connectDB from './db';
+import logger from './util/logger';
 
 const startApp = async () => {
 	const limiter = rateLimit({
@@ -29,7 +30,7 @@ const startApp = async () => {
 	app.use(getPolicy);
 	app.use(updatePolicy);
 	app.listen(config.PORT, () => {
-		console.log(`server up and running on port ${config.PORT}`);
+		logger.info(`server up and running on port ${config.PORT}`);
 	});
 };
 export default startApp;

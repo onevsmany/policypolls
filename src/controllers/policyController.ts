@@ -1,5 +1,6 @@
 import Policy from '../models/policy';
 import moment from 'moment';
+import logger from '../util/logger';
 
 /**
  * @description all controllers related to policy lives here
@@ -20,6 +21,7 @@ export const createPolicy = async (user_id, policies: string[]) => {
 		});
 		await userPolicy.save();
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error(e.message);
 	}
 };
@@ -29,6 +31,7 @@ export const getUserPolicy = async (user_id) => {
 		const userPolicy = await Policy.getPolicyByUser(user_id);
 		return userPolicy.policies;
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error(e.message);
 	}
 };
@@ -42,6 +45,7 @@ export const updateUserPolicy = async (user_id: string, policy: string[]) => {
 		userPolicy.lastUpdatedAt = await lastUpdatedAt;
 		await userPolicy.save();
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error('Could not update policy for this user');
 	}
 };
@@ -54,11 +58,16 @@ export const updateUserPolicy = async (user_id: string, policy: string[]) => {
  * I would come back and optimise the query or model the data differently. 
  */
 export const allPolicy = async () => {
-	const mypoly = await Policy.find({}, { createdAt: 0, lastUpdatedAt: 0, user: 0, _id: 0, __v: 0 });
-	let flat: string[] = [];
-	await mypoly.forEach((doc) => (flat = flat.concat(doc.policies)));
-	const policyCount = await countPolicies(flat);
-	return policyCount;
+	try {
+		const mypoly = await Policy.find({}, { createdAt: 0, lastUpdatedAt: 0, user: 0, _id: 0, __v: 0 });
+		let flat: string[] = [];
+		await mypoly.forEach((doc) => (flat = flat.concat(doc.policies)));
+		const policyCount = await countPolicies(flat);
+		return policyCount;
+	} catch (e) {
+		logger.error(e.message);
+		throw new Error('Internal server Error');
+	}
 };
 
 const countPolicies = async function(params: string[]) {
@@ -69,7 +78,7 @@ const countPolicies = async function(params: string[]) {
 		}
 		return count;
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error('Internal Server Error');
-		// log error
 	}
 };

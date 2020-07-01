@@ -1,5 +1,6 @@
 import { Model, Schema, model, Document, SchemaTypes } from 'mongoose';
 import { string } from 'joi';
+import logger from '../util/logger';
 
 interface IPolicyDocument extends Document {
 	user: string;
@@ -64,6 +65,7 @@ policySchema.pre<IPolicyDocument>('save', async function(next) {
 			next();
 		}
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error('');
 	}
 });

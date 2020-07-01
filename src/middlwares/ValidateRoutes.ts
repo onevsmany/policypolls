@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import joi from '@hapi/joi';
-import jsonwebtoken, { verify } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 
 import { JWT_KEY } from '../config/index';
+import logger from '../util/logger';
 
 /**
  * @description Router level middlewares to validate input to a route.  
@@ -25,6 +26,7 @@ export const loginValidator = async function(req: Request, res: Response, next: 
 				error: `${e.message}`
 			})
 			.end();
+		logger.error(e.message);
 	}
 };
 
@@ -45,6 +47,7 @@ export const signupValidator = async function(req: Request, res: Response, next:
 				error: e.message
 			})
 			.end();
+		logger.error(e.message);
 	}
 };
 
@@ -63,6 +66,7 @@ export const validatePolicy = async (req: Request, res: Response, next: NextFunc
 				error: e.message
 			})
 			.end();
+		logger.error(e.message);
 	}
 };
 
@@ -97,5 +101,6 @@ export const validatePasswordChange = async function(req: Request, res: Response
 				error: e.message
 			})
 			.end();
+		logger.error(e.message);
 	}
 };

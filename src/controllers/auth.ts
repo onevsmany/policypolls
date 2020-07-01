@@ -1,6 +1,6 @@
 import User from '../models/user';
 import { ISignup } from '../interfaces/index';
-import { compareSync } from 'bcrypt';
+import logger from '../util/logger';
 
 /**
  * @description All controllers related to authetication live here. just me keeping data access layer seperate 
@@ -16,6 +16,7 @@ export const SignUp = async (body: ISignup) => {
 		const token = await user.generateAuthToken();
 		return token;
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error(`${e.message}`);
 	}
 };
@@ -26,6 +27,7 @@ export const login = async (email: string, password: string) => {
 		const token = await user.generateAuthToken();
 		return token;
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error(e.message);
 	}
 };
@@ -42,6 +44,7 @@ export const changeUserPassword = async (id, oldPassword: string, newPassword: s
 		user.password = newPassword;
 		user.save();
 	} catch (e) {
+		logger.error(e.message);
 		throw new Error(e.message);
 	}
 };
