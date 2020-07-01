@@ -1,14 +1,11 @@
-import Policy from './src/models/policy'
+const winston = require('winston');
+const logger = winston.createLogger({
+	transports: [ new winston.transports.Console() ]
+});
 
-const user = '5ee8e88d8ab1265b3445a0aa'
-const createdAt = '24 06 2020 04:22:14'
-const policies = ['healthcasre', 'dffffddd', 'ddddsqwd']
-const me = new Policy({
-    user,
-    createdAt,
-    policies
-    
-})
-me.save()
-
-console.log(me);
+logger.info('What rolls down stairs');
+logger.info('alone or in pairs,');
+logger.info('and over your neighbors dog?');
+logger.warn('Whats great for a snack,');
+logger.info('And fits on your back?');
+logger.error('Its log, log, log');
