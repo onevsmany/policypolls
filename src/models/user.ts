@@ -63,6 +63,7 @@ UserSchema.methods.generateAuthToken = async function<IUserModel>() {
 		await this.save();
 		return token;
 	} catch (e) {
+		logger.error(`${e.message}`);
 		throw new Error(`Unable to generate token`);
 	}
 };

@@ -70,7 +70,7 @@ export const allPolicy = async () => {
 	}
 };
 
-const countPolicies = async function(params: string[]) {
+export const countPolicies = async function(params: string[]) {
 	try {
 		let count = {};
 		for (let i of params) {
