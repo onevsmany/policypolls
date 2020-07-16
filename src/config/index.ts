@@ -40,11 +40,10 @@ switch (process.env.NODE_ENV) {
 		config = {
 			DB_CONNECTION: process.env.CLUSTER_SRV,
 			PORT: 3000,
-			level: 'silly'
-		};
+			level: 'silly',
+			JWT_KEY: 'afde5f8c4b8362dc4a7ac492c373097f9de7876847f60fc9eca7e70a4db1a63cc530eb774e6808778d33e3186502c21c0bbaf1e2e61eeff24b40af7ab1215d93';
+		}
 }
-//
-export const JWT_KEY: string =
-	'afde5f8c4b8362dc4a7ac492c373097f9de7876847f60fc9eca7e70a4db1a63cc530eb774e6808778d33e3186502c21c0bbaf1e2e61eeff24b40af7ab1215d93';
+
 
 export default config;

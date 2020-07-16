@@ -2,15 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import joi from '@hapi/joi';
 import { verify } from 'jsonwebtoken';
 
-import { JWT_KEY } from '../config/index';
+import config from '../config/index';
 import logger from '../util/logger';
 
+const JWT_KEY = config.JWT_KEY
+
 /**
- * @description Router level middlewares to validate input to a route.  
- * @todo decide on validation strategy & use joi to vaidate schema properties. 
+ * @description Router level middlewares to validate input to a route.   
  */
 
-export const loginValidator = async function(req: Request, res: Response, next: NextFunction) {
+export const loginValidator = async function (req: Request, res: Response, next: NextFunction) {
 	try {
 		const schema = joi.object({
 			email: joi.string().email().required(),
@@ -30,7 +31,7 @@ export const loginValidator = async function(req: Request, res: Response, next: 
 	}
 };
 
-export const signupValidator = async function(req: Request, res: Response, next: NextFunction) {
+export const signupValidator = async function (req: Request, res: Response, next: NextFunction) {
 	try {
 		const schema = await joi.object({
 			username: joi.string().required(),
@@ -70,7 +71,7 @@ export const validatePolicy = async (req: Request, res: Response, next: NextFunc
 	}
 };
 
-export const verifyTokenFromHeader = async function(req) {
+export const verifyTokenFromHeader = async function (req) {
 	try {
 		if (
 			(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
@@ -85,7 +86,7 @@ export const verifyTokenFromHeader = async function(req) {
 	}
 };
 
-export const validatePasswordChange = async function(req: Request, res: Response, next: NextFunction) {
+export const validatePasswordChange = async function (req: Request, res: Response, next: NextFunction) {
 	try {
 		const schema = await joi.object({
 			oldPassword: joi.string().required(),

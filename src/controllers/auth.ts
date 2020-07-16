@@ -3,7 +3,7 @@ import { ISignup } from '../interfaces/index';
 import logger from '../util/logger';
 
 /**
- * @description All controllers related to authetication live here. just me keeping data access layer seperate 
+ * @description All controllers related to authentication live here. just me keeping data access layer seperate 
  */
 
 export const SignUp = async (body: ISignup) => {
