@@ -1,0 +1,19 @@
+CLARIFICATION CHECKLIST:
+1. clarify if issues are predefined
+
+IMPLEMENTATIONN CHECKLIST:
+1. Turned of TS "noImplicitAny" - will incrementally adopt TS fully as we move.
+2. Use a logging library like Morgan or winston to handle log errors.
+3. Schedule Backups to atlas cluster
+4. Implement JWT auth. - done 
+5. incrementally add Oauth.
+6. comeback and rectify type casting from dotenv to other types
+7. enable snyk security 
+8. Come back and move all the controller into groups like auth, policy. Currently this are unccessary abstractions, most of this stuff is not
+expected to grow in complexity so no need for over engineering. everthing is modular, if things get complex in future, then we seperate. 
+
+
+PROPOSED FEATURES:
+1. Users should be able to see who is doing what on their list of issues. 
+2. If the issues are not predefined are is no easy way of validating the input, consider building a seperate NLP flask service to power
+    the issues validation. 
