@@ -33,7 +33,7 @@
 		"lodash": "^4.17.15",
 		"moment": "^2.26.0",
 		"moment-timezone": "^0.5.31",
-		"mongoose": "^5.9.18",
+		"mongoose": "^5.10.14",
 		"nodemailer": "^6.4.10",
 		"redis": "^3.0.2",
 		"validator": "^13.0.0",
